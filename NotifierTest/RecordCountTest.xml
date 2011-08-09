@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<settings>
+  <monitor type="RecordCountMonitor">
+    <dbconnection>Data Source=myServerAddress;Initial Catalog=myDataBase;User Id=myUsername;Password=myPassword;</dbconnection>
+    <commandtext>SELECT * FROM TEST</commandtext>
+    <limit>10</limit>
+  </monitor>
+</settings>
