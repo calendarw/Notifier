@@ -77,7 +77,6 @@ namespace Notifier
             mExitApplication = new ToolStripMenuItem();
             mExitApplication.Text = "Exit";
             mExitApplication.Click += mExitApplication_Click;
-            mContextMenu.Items.Add(mExitApplication);
 
             mStartMonitoring = new ToolStripMenuItem();
             mStartMonitoring.Text = "Start";
@@ -86,6 +85,10 @@ namespace Notifier
             mStopMonitoring = new ToolStripMenuItem();
             mStopMonitoring.Text = "Stop";
             mStopMonitoring.Click += mStopMonitoring_Click;
+
+            mContextMenu.Items.Add(mStartMonitoring);
+            mContextMenu.Items.Add(mStopMonitoring);
+            mContextMenu.Items.Add(mExitApplication);
 
             mController = new NotificationController();
 
