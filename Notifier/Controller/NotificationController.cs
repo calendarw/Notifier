@@ -1,5 +1,7 @@
 ﻿using System.Timers;
 using Notifier.Model;
+using System.Diagnostics;
+using System;
 
 namespace Notifier.Controller
 {
@@ -45,11 +47,10 @@ namespace Notifier.Controller
 
         public void Start()
         {
-            if (Model != null)
-            {
-                mTimer.Interval = Interval;
-                mTimer.Start();
-            }
+            Debug.Assert(Model != null, "Model should not be null");
+
+            if (!mTimer.Enabled)
+                mTimer_Elapsed(this, null);
         }
 
         public void Stop()
