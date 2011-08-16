@@ -6,4 +6,15 @@
     <commandtext>SELECT * FROM TEST</commandtext>
     <limit>10</limit>
   </monitor>
+  <monitor type="RecordCountMonitor">
+    <!-->dbconnection>Data Source=myServerAddress;Initial Catalog=myDataBase;User Id=myUsername;Password=myPassword;</dbconnection-->
+    <dbconnection>ojurMfcr9xgDomQ7hlgV2rG8+zmnuQlsVvB+qy8KGrNu/EUA3OS4X5b0nzD3z/Sjgxh+lSpyo9OeKKhmUBrSPIRSOjNZx2D4GBpdZBokILcLOTNlnrZfj81XDk04pRi/</dbconnection>
+    <commandtext>SELECT * FROM TEST WHERE PKEY=@PKEY</commandtext>
+    <parameters>
+      <parameter name="@PKEY" type="Int32">1</parameter>
+      <parameter name="@STRING">Test String</parameter>
+      <parameter name="@DATE" type="DateTime">2011-1-1 12:34:56</parameter>
+    </parameters>
+    <limit>10</limit>
+  </monitor>
 </settings>
