@@ -46,7 +46,7 @@ namespace Notifier.Configuration
 
                     if (property.PropertyType.Equals(typeof(System.Data.IDbConnection)))
                     {
-                        value = new System.Data.SqlClient.SqlConnection(value.ToString());
+                        value = new System.Data.SqlClient.SqlConnection(value.ToString().Decrypt(Salt));
                     }
                     else
                     {
@@ -63,7 +63,7 @@ namespace Notifier.Configuration
             return model;
         }
 
-        public static string EncrytConnectionString(string plain)
+        public static string EncryptConnectionString(string plain)
         {
             return plain.Encrypt(Salt);
         }

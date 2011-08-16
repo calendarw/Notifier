@@ -36,7 +36,7 @@ namespace NotifierTest.Controller
             mController.Stop();
             // for check will timer trigger anymore after stop
             Thread.Sleep(interval);
-            Assert.AreEqual(sleepDuration / interval, mModel.UpdateTimes.Count);
+            Assert.AreEqual(sleepDuration / interval + 1, mModel.UpdateTimes.Count);
             mModel.UpdateTimes.ForEach(o => { Assert.IsTrue((o - checkTime).TotalMilliseconds > interval); checkTime = o; });
         }
 

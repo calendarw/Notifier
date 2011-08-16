@@ -45,11 +45,11 @@ namespace Notifier
 
                 switch (arg)
                 {
-                    case "encryt":
+                    case "encrypt":
                         if (args.Length > i + 1)
                         {
                             string text = args[i + 1];
-                            string encryt = Configuration.ConfigurationManager.EncrytConnectionString(text);
+                            string encryt = Configuration.ConfigurationManager.EncryptConnectionString(text);
                             i = i + 1;
                             Console.WriteLine(encryt);
                         }

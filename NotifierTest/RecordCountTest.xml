@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <settings>
   <monitor type="RecordCountMonitor">
-    <dbconnection>Data Source=myServerAddress;Initial Catalog=myDataBase;User Id=myUsername;Password=myPassword;</dbconnection>
+    <!-->dbconnection>Data Source=myServerAddress;Initial Catalog=myDataBase;User Id=myUsername;Password=myPassword;</dbconnection-->
+    <dbconnection>ojurMfcr9xgDomQ7hlgV2rG8+zmnuQlsVvB+qy8KGrNu/EUA3OS4X5b0nzD3z/Sjgxh+lSpyo9OeKKhmUBrSPIRSOjNZx2D4GBpdZBokILcLOTNlnrZfj81XDk04pRi/</dbconnection>
     <commandtext>SELECT * FROM TEST</commandtext>
     <limit>10</limit>
   </monitor>
