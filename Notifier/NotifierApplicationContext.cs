@@ -47,6 +47,7 @@ namespace Notifier
             }
         }
 
+        private ToolStripMenuItem mCheckNow;
         private System.ComponentModel.IContainer mComponents;
         private ContextMenuStrip mContextMenu;
         private NotificationController mController;
@@ -74,6 +75,10 @@ namespace Notifier
             //Attach the menu to the notify icon
             mNotifyIcon.ContextMenuStrip = mContextMenu;
 
+            mCheckNow = new ToolStripMenuItem();
+            mCheckNow.Text = "Check Now";
+            mCheckNow.Click += mCheckNow_Click;
+
             mExitApplication = new ToolStripMenuItem();
             mExitApplication.Text = "Exit";
             mExitApplication.Click += mExitApplication_Click;
@@ -87,12 +92,27 @@ namespace Notifier
             mStopMonitoring.Click += mStopMonitoring_Click;
 
             mContextMenu.Items.Add(mStartMonitoring);
+            mContextMenu.Items.Add(mCheckNow);
             mContextMenu.Items.Add(mStopMonitoring);
             mContextMenu.Items.Add(mExitApplication);
 
             mController = new NotificationController();
 
             StateChange();
+        }
+
+        private void mCheckNow_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                mController.Stop();
+                mController.Start();
+                StateChange();
+            }
+            catch (Exception ex)
+            {
+                mNotifyIcon.ShowBalloonTip(MINUTE, "Error", ex.Message, ToolTipIcon.Error);
+            }
         }
 
         protected override void ExitThreadCore()
