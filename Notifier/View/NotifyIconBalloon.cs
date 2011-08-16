@@ -49,9 +49,11 @@ namespace Notifier.View
 
                 foreach (IMonitor monitor in Model.Items)
                 {
-                    i++;
                     if (monitor.ShouldNotify)
-                        text = string.Format(@"{0}{1}{2}", text, string.IsNullOrEmpty(text) ? string.Empty : "\n", monitor.Caption); 
+                    {
+                        text = string.Format(@"{0}{1}{2}", text, string.IsNullOrEmpty(text) ? string.Empty : "\n", monitor.Caption);
+                        i++;
+                    }
                 }
 
                 string title = string.Format(@"{0} task{1} waiting to be done", i, i > 1 ? "s are" : " is");
