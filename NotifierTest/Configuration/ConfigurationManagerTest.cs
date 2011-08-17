@@ -38,7 +38,7 @@ namespace NotifierTest.Model
         public void FromXmlRecordCountTest()
         {
             INotificationModel model = ConfigurationManager.FromXml(recordCountTestFilePath);
-            Assert.AreEqual(2, model.Items.Count);
+            Assert.AreEqual(3, model.Items.Count);
 
             // basic
             Assert.AreEqual(typeof(RecordCountMonitor), model.Items[0].GetType());
@@ -62,7 +62,14 @@ namespace NotifierTest.Model
             Assert.AreEqual(monitor.Parameters["@DATE"], new DateTime(2011, 1, 1, 12, 34, 56));
             Assert.AreEqual(10, monitor.Limit);
 
-
+            // commandtext from file
+            Assert.AreEqual(typeof(RecordCountMonitor), model.Items[2].GetType());
+            monitor = model.Items[2] as RecordCountMonitor;
+            Assert.IsNotNull(monitor.DbConnection);
+            Assert.AreEqual("Data Source=myServerAddress;Initial Catalog=myDataBase;User Id=myUsername;Password=myPassword;"
+                , monitor.DbConnection.ConnectionString);
+            Assert.AreEqual("SELECT GETDATE()", monitor.CommandText);
+            Assert.AreEqual(0, monitor.Limit);
         }
     }
 }

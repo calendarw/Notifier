@@ -6,6 +6,7 @@ using System.Text;
 using System.Xml.Linq;
 using Notifier.Model;
 using Notifier.Model.Monitor;
+using System.IO;
 
 namespace Notifier.Configuration
 {
@@ -23,7 +24,7 @@ namespace Notifier.Configuration
             {
                 string type = e.Attribute("type").Value;
                 string typeName = string.Format(@"Notifier.Model.Monitor.{0}", type);
-                
+
                 Type monitorType = Type.GetType(typeName);  // exception should throw invalid type
 
                 IMonitor monitor = Activator.CreateInstance(monitorType) as IMonitor;
@@ -44,7 +45,22 @@ namespace Notifier.Configuration
                     if (property == null)
                         throw new ArgumentException(string.Format("Property not found for element: {0}", elementName), elementName);
 
-                    if (property.PropertyType.Equals(typeof(System.Data.IDbConnection)))
+                    if ("commandtext".Equals(elementName))
+                    {
+                        XAttribute a = p.Attribute("type");
+
+                        string v = a == null ? "" : a.Value;
+
+                        if ("file".Equals(v.ToLower()))
+                        {
+                            using (StreamReader reader = new StreamReader(value.ToString()))
+                            {
+                                value = reader.ReadToEnd();
+                                reader.Close();
+                            }
+                        }
+                    }
+                    else if (property.PropertyType.Equals(typeof(System.Data.IDbConnection)))
                     {
                         XAttribute a = p.Attribute("encrypted");
 
@@ -69,7 +85,8 @@ namespace Notifier.Configuration
 
                         value = new System.Data.SqlClient.SqlConnection(connectionString);
                     }
-                    else if (property.PropertyType.Equals(typeof(Dictionary<string, object>))){
+                    else if (property.PropertyType.Equals(typeof(Dictionary<string, object>)))
+                    {
                         Dictionary<string, object> parameters = new Dictionary<string, object>();
 
                         foreach (XElement pa in p.Elements("parameter"))

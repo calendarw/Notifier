@@ -15,4 +15,9 @@
     </parameters>
     <limit>10</limit>
   </monitor>
+  <monitor type="RecordCountMonitor">
+    <dbconnection encrypted="1">ojurMfcr9xgDomQ7hlgV2rG8+zmnuQlsVvB+qy8KGrNu/EUA3OS4X5b0nzD3z/Sjgxh+lSpyo9OeKKhmUBrSPIRSOjNZx2D4GBpdZBokILcLOTNlnrZfj81XDk04pRi/</dbconnection>
+    <commandtext type="file">Test.sql</commandtext>
+    <limit>0</limit>
+  </monitor>
 </settings>
