@@ -46,7 +46,28 @@ namespace Notifier.Configuration
 
                     if (property.PropertyType.Equals(typeof(System.Data.IDbConnection)))
                     {
-                        value = new System.Data.SqlClient.SqlConnection(value.ToString().Decrypt(Salt));
+                        XAttribute a = p.Attribute("encrypted");
+
+                        string v = a == null ? "" : a.Value;
+
+                        bool isEncrypted;
+
+                        switch (v.ToLower())
+                        {
+                            case "1":
+                            case "true":
+                            case "y":
+                            case "yes":
+                                isEncrypted = true;
+                                break;
+                            default:
+                                isEncrypted = false;
+                                break;
+                        }
+
+                        string connectionString = isEncrypted ? value.ToString().Decrypt(Salt) : value.ToString();
+
+                        value = new System.Data.SqlClient.SqlConnection(connectionString);
                     }
                     else if (property.PropertyType.Equals(typeof(Dictionary<string, object>))){
                         Dictionary<string, object> parameters = new Dictionary<string, object>();
