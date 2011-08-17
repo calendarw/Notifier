@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Text;
 using System.Windows.Forms;
-using Notifier.View;
 using Notifier.Model;
+using Notifier.View;
 
 namespace Notifier
 {
@@ -16,18 +14,25 @@ namespace Notifier
         [STAThread]
         static void Main(string[] args)
         {
-            if (args.Length == 0)
+            try
             {
-                RunApplication();
-            }
-            else
-            {
-                if (!AttachConsole(-1))
-                { 
-                    // Attach to an parent process console
-                    AllocConsole(); // Alloc a new console
+                if (args.Length == 0)
+                {
+                    RunApplication();
                 }
-                HandleArgs(args);
+                else
+                {
+                    if (!AttachConsole(-1))
+                    {
+                        // Attach to an parent process console
+                        AllocConsole(); // Alloc a new console
+                    }
+                    HandleArgs(args);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
             }
         }
 
@@ -49,9 +54,9 @@ namespace Notifier
                         if (args.Length > i + 1)
                         {
                             string text = args[i + 1];
-                            string encryt = Configuration.ConfigurationManager.EncryptConnectionString(text);
+                            string encrypt = Configuration.ConfigurationManager.EncryptConnectionString(text);
                             i = i + 1;
-                            Console.WriteLine(encryt);
+                            Console.WriteLine(encrypt);
                         }
                         break;
                 }
