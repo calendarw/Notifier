@@ -56,6 +56,8 @@ namespace Notifier.View
                     }
                 }
 
+                mNotifyIcon.Text = string.Format(@"{0} task{1} monitoring", Model.Items.Count, Model.Items.Count > 1 ? "s are" : " is");
+
                 string title = string.Format(@"{0} task{1} waiting to be done", i, i > 1 ? "s are" : " is");
 
                 if (!string.IsNullOrEmpty(text))
