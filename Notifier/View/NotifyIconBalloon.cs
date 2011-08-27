@@ -58,7 +58,8 @@ namespace Notifier.View
 
                 string title = string.Format(@"{0} task{1} waiting to be done", i, i > 1 ? "s are" : " is");
 
-                mNotifyIcon.ShowBalloonTip(Timeout, title, text, ToolTipIcon.Info);
+                if (!string.IsNullOrEmpty(text))
+                    mNotifyIcon.ShowBalloonTip(Timeout, title, text, ToolTipIcon.Info);
             }
         }
     }
