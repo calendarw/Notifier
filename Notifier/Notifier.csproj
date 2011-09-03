@@ -55,6 +55,7 @@
     <Compile Include="Configuration\ConfigurationManager.cs" />
     <Compile Include="Controller\NotificationController.cs" />
     <Compile Include="Controller\IController.cs" />
+    <Compile Include="IntegerExtension.cs" />
     <Compile Include="Model\IModel.cs" />
     <Compile Include="Model\INotificationModel.cs" />
     <Compile Include="Model\Monitor\IMonitors.cs" />
