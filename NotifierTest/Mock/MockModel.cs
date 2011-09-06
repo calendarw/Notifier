@@ -32,12 +32,12 @@ namespace NotifierTest.Mock
 
         public void Add(IMonitor item)
         {
-            throw new NotImplementedException();
+            Items.Add(item);
         }
 
         public void Remove(IMonitor item)
         {
-            throw new NotImplementedException();
+            Items.Remove(item);
         }
 
         public void Update()
@@ -45,11 +45,14 @@ namespace NotifierTest.Mock
             UpdateTimes.Add(DateTime.Now);
             if (ProcessingTime > 0)
                 Thread.Sleep(ProcessingTime);
+
+            if (ContentsUpdated != null)
+                ContentsUpdated(this, EventArgs.Empty);
         }
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            Items.Clear();
         }
     }
 }

@@ -35,6 +35,7 @@
     <Reference Include="nunit.mocks, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,12 +45,15 @@
   <ItemGroup>
     <Compile Include="Controller\NotificationControllerTest.cs" />
     <Compile Include="Mock\MockModel.cs" />
+    <Compile Include="Mock\MockMonitor.cs" />
     <Compile Include="Model\Monitor\FileExistMonitorTest.cs" />
     <Compile Include="Model\Monitor\MonitorTest.cs" />
     <Compile Include="Model\Monitor\OverLimitMonitorTest.cs" />
     <Compile Include="Configuration\ConfigurationManagerTest.cs" />
     <Compile Include="Model\Monitor\RecordCountMonitorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\NotificationViewTest.cs" />
+    <Compile Include="View\NotifyIconBalloonViewTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Notifier\Notifier.csproj">

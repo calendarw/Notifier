@@ -1,30 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
+﻿using System.IO;
 using Notifier.Model.Monitor;
-using System.IO;
-using System.Diagnostics;
+using NUnit.Framework;
 
 namespace NotifierTest.Model.Monitor
 {
     [TestFixture]
-    public class FileExistMonitorTest : OverLimitMonitorTest
+    public class FileExistMonitorTest : OverLimitMonitorTest<FileExistMonitor>
     {
-        private FileExistMonitor mMonitor;
         private DirectoryInfo mDirInfo;
-
         private string mPath;
 
-        [SetUp]
-        public void Init()
+        protected override FileExistMonitor GetExceptionMonitor()
+        {
+            return new FileExistMonitor();
+        }
+
+        protected override FileExistMonitor GetNormalMonitor()
+        {
+            FileExistMonitor monitor = new FileExistMonitor();
+            monitor.Path = mPath;
+            return monitor;
+        }
+
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
         {
             mPath = Directory.GetCurrentDirectory();
             mDirInfo = new DirectoryInfo(mPath);
-
-            mMonitor = new FileExistMonitor();
-            mMonitor.Path = mPath;
         }
 
         [Test]
@@ -32,11 +34,11 @@ namespace NotifierTest.Model.Monitor
         {
             string pattern = "*.*";
             FileInfo[] files = mDirInfo.GetFiles(pattern);
-
-            mMonitor.SearchOption = SearchOption.TopDirectoryOnly;
-            mMonitor.SearchPattern = pattern;
-
-            LimitTest(mMonitor, files.Length);
+            FileExistMonitor monitor = GetNormalMonitor();
+            monitor.SearchOption = SearchOption.TopDirectoryOnly;
+            monitor.SearchPattern = pattern;
+            monitor.Check();
+            Assert.AreEqual(files.Length, monitor.Current);
         }
 
         [Test]
@@ -44,11 +46,11 @@ namespace NotifierTest.Model.Monitor
         {
             string pattern = "*.dll";
             FileInfo[] files = mDirInfo.GetFiles(pattern);
-
-            mMonitor.SearchOption = SearchOption.TopDirectoryOnly;
-            mMonitor.SearchPattern = pattern;
-
-            LimitTest(mMonitor, files.Length);
+            FileExistMonitor monitor = GetNormalMonitor();
+            monitor.SearchOption = SearchOption.TopDirectoryOnly;
+            monitor.SearchPattern = pattern;
+            monitor.Check();
+            Assert.AreEqual(files.Length, monitor.Current);
         }
     }
 }

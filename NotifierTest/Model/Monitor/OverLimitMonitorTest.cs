@@ -1,24 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Notifier.Model;
-using Notifier.Model.Monitor;
+﻿using Notifier.Model.Monitor;
 using NUnit.Framework;
 
 namespace NotifierTest.Model.Monitor
 {
-    public class OverLimitMonitorTest : MonitorTest
+    public abstract class OverLimitMonitorTest<T> : MonitorTest<T>
+        where T : OverLimitMonitor
     {
-        public void LimitTest(OverLimitMonitor monitor, int expectedLimit)
+        [Test]
+        public void BelowLimitTest()
         {
-            CheckNormalTest(monitor);
-            Assert.AreEqual(expectedLimit, monitor.Current);
-
-            monitor.Limit = expectedLimit;
+            OverLimitMonitor monitor = GetNormalMonitor();
+            monitor.Check();
+            int expected = monitor.Current;
+            monitor.Limit = expected + 1;
             Assert.IsFalse(monitor.ShouldNotify);
+        }
 
-            monitor.Limit = expectedLimit - 1;
+        [Test]
+        public void EqualTest()
+        {
+            OverLimitMonitor monitor = GetNormalMonitor();
+            monitor.Check();
+            int expected = monitor.Current;
+            monitor.Limit = expected;
+            Assert.IsFalse(monitor.ShouldNotify);
+        }
+
+        [Test]
+        public void OverLimitTest()
+        {
+            OverLimitMonitor monitor = GetNormalMonitor();
+            monitor.Check();
+            int expected = monitor.Current;
+            monitor.Limit = expected - 1;
             Assert.IsTrue(monitor.ShouldNotify);
         }
     }

@@ -4,29 +4,66 @@ using NUnit.Framework;
 
 namespace NotifierTest.Model.Monitor
 {
-    public class MonitorTest
+    public abstract class MonitorTest<T>
+        where T : IMonitor
     {
-        private bool _isEventFired = false;
+        protected Exception ExceptionThrown { get; private set; }
+        protected bool IsCompleteEventFired { get; private set; }
+        protected bool IsExceptionEventFired { get; private set; }
 
-        public void CheckNormalTest(IMonitor monitor)
+        protected abstract T GetNormalMonitor();
+        protected abstract T GetExceptionMonitor();
+
+        protected void ExceptionCheckCompleted(object sender, EventArgs e)
         {
-            _isEventFired = false;
-            monitor.CheckCompleted += monitor_CheckCompleted;
-            monitor.ExceptionThrown += monitor_ExceptionThrown;
-            monitor.Check();
-            Assert.IsTrue(monitor.IsCompleted);
-            Assert.IsTrue(_isEventFired);
-            monitor.CheckCompleted -= monitor_CheckCompleted;
+            IsCompleteEventFired = true;
         }
 
-        private void monitor_ExceptionThrown(object sender, UnhandledExceptionEventArgs e)
+        protected void ExpectedCheckCompleted(object sender, EventArgs e)
+        {
+            IsCompleteEventFired = true;
+        }
+
+        protected void ExceptionShouldNotThrown(object sender, UnhandledExceptionEventArgs e)
         {
             Assert.Fail(e.ExceptionObject.ToString());
         }
 
-        private void monitor_CheckCompleted(object sender, EventArgs e)
+        protected void ExceptionShouldThrown(object sender, UnhandledExceptionEventArgs e)
         {
-            _isEventFired = true;
+            IsExceptionEventFired = true;
+            ExceptionThrown = (Exception)e.ExceptionObject;
+        }
+
+        [SetUp]
+        public virtual void Setup()
+        {
+            ExceptionThrown = null;
+            IsCompleteEventFired = false;
+            IsExceptionEventFired = false;
+        }
+
+        [Test]
+        public void ShouldNormal()
+        {
+            IMonitor monitor = GetNormalMonitor();
+            monitor.CheckCompleted += ExpectedCheckCompleted;
+            monitor.ExceptionThrown += ExceptionShouldNotThrown;
+            monitor.Check();
+            Assert.IsTrue(monitor.IsCompleted);
+            Assert.IsTrue(IsCompleteEventFired);
+            Assert.IsFalse(IsExceptionEventFired);
+        }
+
+        [Test]
+        public void ShouldThrowException()
+        {
+            IMonitor monitor = GetExceptionMonitor();
+            monitor.CheckCompleted += ExceptionCheckCompleted;
+            monitor.ExceptionThrown += ExceptionShouldThrown;
+            monitor.Check();
+            Assert.IsTrue(IsCompleteEventFired);
+            Assert.IsTrue(IsExceptionEventFired);
         }
     }
 }
