@@ -32,7 +32,8 @@ namespace Notifier
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message);
+                System.IO.File.AppendAllText(@"C:\TEMP\Notifier.log", string.Format("{0}\n{1}", ex.Message, ex.StackTrace));
             }
         }
 
