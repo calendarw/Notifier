@@ -32,6 +32,8 @@ namespace Notifier.Configuration
                 if (monitor == null)
                     throw new NotSupportedException("Invalid type attribute for monitor");
 
+                bool skip = false;
+
                 PropertyInfo[] properties = monitorType.GetProperties();
                 foreach (XElement p in e.Elements())
                 {
@@ -40,6 +42,23 @@ namespace Notifier.Configuration
 
                     if (value == null)
                         throw new ArgumentNullException(elementName, string.Format("Value is empty for element: {0}", elementName));
+
+                    if ("enable".Equals(elementName))
+                    {
+                        switch (value.ToString().ToLower())
+                        {
+                            case "0":
+                            case "f":
+                            case "false":
+                            case "n":
+                            case "no":
+                                skip = true;
+                                break;
+                        }
+
+                        // skip this element
+                        continue;
+                    }
 
                     PropertyInfo property = properties.First(o => o.Name.ToLower().Equals(elementName.ToLower()));
                     if (property == null)
@@ -125,7 +144,9 @@ namespace Notifier.Configuration
                     }
                     property.SetValue(monitor, value, null);
                 }
-                model.Add(monitor);
+
+                if (!skip)
+                    model.Add(monitor);
             }
 
             return model;
