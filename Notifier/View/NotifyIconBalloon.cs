@@ -33,10 +33,10 @@ namespace Notifier.View
             set
             {
                 if (mNotifyIcon != null)
-                    mNotifyIcon.Click -= OnNotifyIconClick;
+                    mNotifyIcon.MouseDown -= OnNotifyIconClick;
 
                 if (value != null)
-                    value.Click += OnNotifyIconClick;
+                    value.MouseDown += OnNotifyIconClick;
 
                 mNotifyIcon = value;
 
@@ -55,9 +55,10 @@ namespace Notifier.View
             ShowMessage(false);
         }
 
-        private void OnNotifyIconClick(object sender, EventArgs e)
+        private void OnNotifyIconClick(object sender, MouseEventArgs e)
         {
-            ShowMessage(true);
+            if (e.Button == MouseButtons.Left)
+                ShowMessage(true);
         }
 
         private void ShowMessage(bool showEmpty)
