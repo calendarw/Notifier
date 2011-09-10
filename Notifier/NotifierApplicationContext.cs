@@ -122,6 +122,9 @@ namespace Notifier
             Model.Clear();
             Model = null;
 
+            mNotifyIcon.Dispose();
+            mNotifyIcon = null;
+
             base.ExitThreadCore();
         }
 
