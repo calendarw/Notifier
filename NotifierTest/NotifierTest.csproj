@@ -51,6 +51,7 @@
     <Compile Include="Model\Monitor\OverLimitMonitorTest.cs" />
     <Compile Include="Configuration\ConfigurationManagerTest.cs" />
     <Compile Include="Model\Monitor\RecordCountMonitorTest.cs" />
+    <Compile Include="Model\NotificationModelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\NotificationViewTest.cs" />
     <Compile Include="View\NotifyIconBalloonViewTest.cs" />

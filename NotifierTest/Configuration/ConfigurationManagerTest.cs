@@ -1,16 +1,14 @@
-﻿using System.Linq;
-using System.Xml.Linq;
-using NUnit.Framework;
-using Notifier.Model;
-using Notifier.Model.Monitor;
+﻿using System;
 using System.IO;
 using Notifier.Configuration;
-using System;
+using Notifier.Model;
+using Notifier.Model.Monitor;
+using NUnit.Framework;
 
 namespace NotifierTest.Model
 {
     [TestFixture]
-    public class NotificationModelTest
+    public class ConfigurationManagerTest
     {
         string fileExistTestFilePath;
         string recordCountTestFilePath;

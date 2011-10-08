@@ -17,6 +17,12 @@ namespace NotifierTest.Mock
             mShouldNotify = shouldNotify;
         }
 
+        public MockMonitor(string name, bool shouldNotify, bool shouldThrownException)
+            :this(name, shouldNotify)
+        {
+            ShouldThrownException = shouldThrownException;
+        }
+
         public string Caption
         {
             get { return mName; }
@@ -28,19 +34,50 @@ namespace NotifierTest.Mock
             set { throw new NotImplementedException(); }
         }
 
+        public bool ExceptionEventFired
+        {
+            get;
+            private set;
+        }
+
+        public bool ExceptionThrownEventAdded
+        {
+            get { return ExceptionThrown != null; }
+        }
+
         public bool ShouldNotify
         {
             get { return mShouldNotify; }
         }
 
+        public bool ShouldThrownException
+        {
+            get;
+            private set;
+        }
+
         public bool IsCompleted
         {
-            get { return true; }
+            get;
+            private set;
         }
 
         public void Check()
         {
-            throw new NotImplementedException();
+            IsCompleted = false;
+
+            ExceptionEventFired = false;
+
+            if (ShouldThrownException && ExceptionThrownEventAdded)
+            {
+                ExceptionThrown(this, new UnhandledExceptionEventArgs(new Exception(), false));
+                ExceptionEventFired = true;
+            }
+
+            IsCompleted = true;
+
+            if (CheckCompleted != null)
+                CheckCompleted(this, EventArgs.Empty);
         }
 
         public event EventHandler CheckCompleted;

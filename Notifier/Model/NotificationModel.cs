@@ -17,6 +17,8 @@ namespace Notifier.Model
 
         public event EventHandler ContentsUpdated;
 
+        public event UnhandledExceptionEventHandler ExceptionThrown;
+
         public void Add(IMonitor item)
         {
             if (item == null)
@@ -70,8 +72,8 @@ namespace Notifier.Model
 
         private void item_ExceptionThrown(object sender, UnhandledExceptionEventArgs e)
         {
-            // TODO handle exception thrown
-            throw new NotImplementedException();
+            if (ExceptionThrown != null)
+                ExceptionThrown(sender, e);
         }
     }
 }
