@@ -15,7 +15,7 @@ namespace NotifierTest.Model
         }
 
         [Test]
-        public void UnhandledExceptionThrownTest()
+        public void ShouldFireEventWhenExceptionThrown()
         {
             Mock.MockMonitor monitor = new Mock.MockMonitor("ExceptionMonitor", true, true);
             mModel.Add(monitor);
