@@ -55,7 +55,7 @@ namespace Notifier.Model
 
             mWorking = true;
 
-            mMonitors.ForEach(o =>
+            mMonitors.FindAll(o => o.Enabled).ForEach(o =>
             {
                 Thread t = new Thread(new ThreadStart(o.Check));
                 t.Start();

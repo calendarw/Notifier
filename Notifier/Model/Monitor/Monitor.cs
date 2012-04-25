@@ -6,6 +6,11 @@ namespace Notifier.Model.Monitor
 {
     public abstract class Monitor : IMonitor
     {
+        protected Monitor()
+        {
+            Enabled = true;
+        }
+
         public abstract string Caption { get; }
 
         public bool Enabled { get; set; }
@@ -40,6 +45,7 @@ namespace Notifier.Model.Monitor
 
         public void Check()
         {
+            if (!Enabled) return;
 
             IsCompleted = false;
 
