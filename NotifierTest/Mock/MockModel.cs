@@ -42,17 +42,27 @@ namespace NotifierTest.Mock
 
         public void Update()
         {
-            UpdateTimes.Add(DateTime.Now);
-            if (ProcessingTime > 0)
-                Thread.Sleep(ProcessingTime);
+            try
+            {
+                UpdateTimes.Add(DateTime.Now);
+                if (ProcessingTime > 0)
+                    Thread.Sleep(ProcessingTime);
 
-            if (ContentsUpdated != null)
-                ContentsUpdated(this, EventArgs.Empty);
+                if (ContentsUpdated != null)
+                    ContentsUpdated(this, EventArgs.Empty);
+            }
+            catch (Exception ex)
+            {
+                if (ExceptionThrown != null)
+                    ExceptionThrown(this, new UnhandledExceptionEventArgs(ex, false));
+            }
         }
 
         public void Clear()
         {
             Items.Clear();
         }
+
+        public event UnhandledExceptionEventHandler ExceptionThrown;
     }
 }

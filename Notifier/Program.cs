@@ -8,6 +8,8 @@ namespace Notifier
 {
     static class Program
     {
+        const string LogPath = @"C:\TEMP";
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -33,7 +35,7 @@ namespace Notifier
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                System.IO.File.AppendAllText(@"C:\TEMP\Notifier.log", string.Format("{0}\n{1}", ex.Message, ex.StackTrace));
+                WriteException(ex);
             }
         }
 
@@ -62,6 +64,13 @@ namespace Notifier
                         break;
                 }
             }
+        }
+
+        private static void model_ExceptionThrown(object sender, UnhandledExceptionEventArgs e)
+        {
+            Exception ex = e.ExceptionObject as Exception;
+            if (ex != null)
+                WriteException(ex);
         }
 
         private static void RunApplication()
@@ -94,9 +103,20 @@ namespace Notifier
             context.Interval = second * 1000;
 
             INotificationModel model = Configuration.ConfigurationManager.FromXml("settings.xml");
+            model.ExceptionThrown += model_ExceptionThrown;
             context.Model = model;
             context.Start();
             Application.Run(context);
+        }
+
+        private static void WriteException(Exception ex)
+        {
+            if (!System.IO.Directory.Exists(LogPath))
+                System.IO.Directory.CreateDirectory(LogPath);
+            System.IO.File.AppendAllText(
+                string.Format("{0}\\{1}", LogPath, @"Notifier.log"),
+                string.Format("\n{0}\n{1}", ex.Message, ex.StackTrace)
+            );
         }
     }
 }

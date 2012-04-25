@@ -12,6 +12,8 @@ namespace Notifier.Model
         void Add(IMonitor item);
         void Clear();
         void Remove(IMonitor item);
-        void Update();
+        void Update(); 
+        
+        event UnhandledExceptionEventHandler ExceptionThrown;
     }
 }
