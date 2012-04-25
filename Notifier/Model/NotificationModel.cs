@@ -66,6 +66,8 @@ namespace Notifier.Model
         {
             mWorking = mMonitors.FindAll(o => !o.IsCompleted).Count > 0;
 
+            if (mWorking) return;
+
             if (ContentsUpdated != null)
                 ContentsUpdated(sender, e);
         }
