@@ -1,5 +1,6 @@
 ﻿using Notifier.Model;
 using NUnit.Framework;
+using NotifierTest.Mock;
 
 namespace NotifierTest.Model
 {
@@ -17,12 +18,26 @@ namespace NotifierTest.Model
         [Test]
         public void ShouldFireEventWhenExceptionThrown()
         {
-            Mock.MockMonitor monitor = new Mock.MockMonitor("ExceptionMonitor", true, true);
+            MockMonitor monitor = new MockMonitor("ExceptionMonitor", true);
+            monitor.ShouldThrownException = true;
             mModel.Add(monitor);
             Assert.IsTrue(monitor.ExceptionThrownEventAdded);
             Assert.IsFalse(monitor.ExceptionEventFired);
-            monitor.Check();
+            mModel.Update();
+            System.Threading.Thread.Sleep(1000);    // Multi-thread process time
             Assert.IsTrue(monitor.ExceptionEventFired);
+        }
+
+        [Test]
+        public void ShouldNotCallCheckIfMonitorIsNotEnabled()
+        {
+            MockMonitor monitor = new MockMonitor("DisabledMonitor", true);
+            monitor.Enabled = false;
+            mModel.Add(monitor);
+            Assert.IsFalse(monitor.IsCheckMethodCalled);
+            mModel.Update();
+            System.Threading.Thread.Sleep(1000);    // Multi-thread process time
+            Assert.IsFalse(monitor.IsCheckMethodCalled);
         }
     }
 }
