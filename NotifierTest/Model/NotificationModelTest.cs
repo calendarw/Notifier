@@ -49,6 +49,24 @@ namespace NotifierTest.Model
             mModel.Update();
             System.Threading.Thread.Sleep(1000);    // Multi-thread process time
             Assert.IsFalse(monitor.IsCheckMethodCalled);
+            Assert.IsFalse(contentUpdatedEventFired);
+        }
+
+        [Test]
+        public void ShouldContentUpdateEventFired()
+        {
+            contentUpdatedEventFired = false;
+            
+            MockMonitor monitor1 = new MockMonitor("DisabledMonitor", true);
+            monitor1.Enabled = false;
+            mModel.Add(monitor1);
+
+            MockMonitor monitor2 = new MockMonitor("EnabledMonitor", true);
+            monitor2.Enabled = true;
+            mModel.Add(monitor2);
+
+            mModel.Update();
+            System.Threading.Thread.Sleep(1000);    // Multi-thread process time
             Assert.IsTrue(contentUpdatedEventFired);
         }
 
