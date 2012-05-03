@@ -64,10 +64,10 @@ namespace Notifier.Model
 
         private void item_CheckCompleted(object sender, EventArgs e)
         {
-            mWorking = mMonitors.FindAll(o => !o.IsCompleted).Count > 0;
+            mWorking = mMonitors.FindAll(o => o.Enabled && !o.IsCompleted).Count > 0;
 
             if (mWorking) return;
-
+            
             if (ContentsUpdated != null)
                 ContentsUpdated(sender, e);
         }
