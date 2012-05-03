@@ -8,16 +8,25 @@ namespace NotifierTest.Model
     public class NotificationModelTest
     {
         private INotificationModel mModel;
+        private bool contentUpdatedEventFired;
 
         [SetUp]
         public void SetUp()
         {
             mModel = new NotificationModel();
+            mModel.ContentsUpdated += OnContentsUpdated;
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            mModel.ContentsUpdated -= OnContentsUpdated;
         }
 
         [Test]
         public void ShouldFireEventWhenExceptionThrown()
         {
+            contentUpdatedEventFired = false;
             MockMonitor monitor = new MockMonitor("ExceptionMonitor", true);
             monitor.ShouldThrownException = true;
             mModel.Add(monitor);
@@ -26,11 +35,13 @@ namespace NotifierTest.Model
             mModel.Update();
             System.Threading.Thread.Sleep(1000);    // Multi-thread process time
             Assert.IsTrue(monitor.ExceptionEventFired);
+            Assert.IsTrue(contentUpdatedEventFired);
         }
 
         [Test]
         public void ShouldNotCallCheckIfMonitorIsNotEnabled()
         {
+            contentUpdatedEventFired = false;
             MockMonitor monitor = new MockMonitor("DisabledMonitor", true);
             monitor.Enabled = false;
             mModel.Add(monitor);
@@ -38,6 +49,12 @@ namespace NotifierTest.Model
             mModel.Update();
             System.Threading.Thread.Sleep(1000);    // Multi-thread process time
             Assert.IsFalse(monitor.IsCheckMethodCalled);
+            Assert.IsTrue(contentUpdatedEventFired);
+        }
+
+        private void OnContentsUpdated(object sender, System.EventArgs e)
+        {
+            contentUpdatedEventFired = true;
         }
     }
 }
